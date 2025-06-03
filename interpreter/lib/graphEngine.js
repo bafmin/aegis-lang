@@ -5,37 +5,70 @@ function parseGraph(jsonStr) {
 
 function executeGraph(graph) {
   const memory = {};
-  const nodes = graph.nodes;
+  const nodeMap = Object.fromEntries(graph.nodes.map(n => [n.id, n]));
+  const executed = new Set();
 
-  for (const node of nodes) {
-    console.log(`\n[Node ${node.id}]`);
-    console.log(`Operation: ${node.op}`);
-    const inputs = node.inputs.map(id => memory[id]);
+  function evalNode(node) {
+    if (executed.has(node.id)) return;
+    const inputs = node.inputs?.map(id => memory[id]) || [];
     let output = null;
+    let shouldExecute = true;
 
-    switch (node.params.operation) {
-      case 'const':
-        output = node.params.value;
+    switch (node.op) {
+      case 'op_compute':
+        switch (node.params.operation) {
+          case 'const':
+            output = node.params.value;
+            break;
+          case 'add':
+            output = inputs.reduce((a, b) => a + b, 0);
+            break;
+          case 'multiply':
+            output = inputs.reduce((a, b) => a * b, 1);
+            break;
+          case 'gt':
+            output = inputs[0] > inputs[1];
+            break;
+          case 'lt':
+            output = inputs[0] < inputs[1];
+            break;
+          case 'eq':
+            output = inputs[0] === inputs[1];
+            break;
+          case 'print':
+            console.log("Output:", node.params.value ?? inputs[0]);
+            break;
+          default:
+            console.warn("Unknown compute op:", node.params.operation);
+        }
         break;
-      case 'add':
-        output = inputs.reduce((a, b) => a + b, 0);
+
+      case 'op_control':
+        switch (node.params.operation) {
+          case 'if':
+            const condition = inputs[0];
+            if (condition) {
+              node.params.true_branch.forEach(nid => evalNode(nodeMap[nid]));
+            } else {
+              node.params.false_branch.forEach(nid => evalNode(nodeMap[nid]));
+            }
+            shouldExecute = false;
+            break;
+          default:
+            console.warn("Unknown control op:", node.params.operation);
+        }
         break;
-      case 'multiply':
-        output = inputs.reduce((a, b) => a * b, 1);
-        break;
-      case 'print':
-        console.log("Output:", inputs[0]);
-        break;
-      default:
-        console.warn("Unknown operation:", node.params.operation);
     }
 
-    if (node.outputs && node.outputs.length > 0 && output !== null) {
+    if (shouldExecute && node.outputs && output !== null) {
       memory[node.outputs[0]] = output;
-      console.log(`Stored ${output} in ${node.outputs[0]}`);
+      console.log(`[Node ${node.id}] -> ${node.outputs[0]} =`, output);
     }
+
+    executed.add(node.id);
   }
 
+  graph.nodes.forEach(evalNode);
   console.log("\nFinal memory state:", memory);
 }
 
