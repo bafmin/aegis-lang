@@ -1,6 +1,6 @@
 
 const fs = require('fs');
-const { parseGraph, executeGraph } = require('./lib/graphParser');
+const { parseGraph, executeGraph } = require('./lib/graphEngine');
 
 const file = process.argv[2];
 if (!file) {
