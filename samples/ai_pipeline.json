@@ -1,0 +1,37 @@
+
+{
+  "nodes": [
+    {
+      "id": "read-data",
+      "op": "op_io",
+      "inputs": [],
+      "outputs": ["process-data"],
+      "params": {
+        "operation": "read",
+        "source": "file",
+        "path": "input.csv"
+      }
+    },
+    {
+      "id": "process-data",
+      "op": "op_compute",
+      "inputs": ["read-data"],
+      "outputs": ["write-output"],
+      "params": {
+        "operation": "normalize",
+        "precision": "float32"
+      }
+    },
+    {
+      "id": "write-output",
+      "op": "op_io",
+      "inputs": ["process-data"],
+      "outputs": [],
+      "params": {
+        "operation": "write",
+        "path": "output.csv"
+      }
+    }
+  ]
+}
+    
