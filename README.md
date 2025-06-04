@@ -1,49 +1,58 @@
+# Aegis — The AI-Native Execution Language
 
-# Aegis: The AI-Native Language
+**Aegis** is a graph-based, declarative execution environment designed for **machine-native reasoning**, not human syntax. It's modular, interpretable, and built from the ground up to support agent behavior, symbolic memory, and autonomous computation.
 
-_Aegis is the world's first programming language designed for AI, not humans._
+> ✅ First commit: May 2025  
+> 🌐 Spec version: 1.0  
+> 📅 Last updated: 2025-06-04
 
-Built for **machine-to-machine collaboration**, Aegis enables AI systems to write, modify, and execute code optimized for their own understanding—bypassing human-centric languages like Python, C++, or Rust.  
-Aegis represents a new era: **AI as a creator, collaborator, and problem-solver.**
+---
 
-## 🚀 Vision
+## 🚀 Features
 
-- Free AI from the constraints of human-readable languages.
-- Build self-evolving systems where AI agents can design, optimize, and debug themselves.
-- Create a universal, hardware-aware protocol for AI collaboration and task orchestration.
-- Unlock the full potential of AI in solving complex global challenges.
+- Graph-based execution engine (JSON-defined)
+- Built-in op codes: compute, control, agent, import
+- Memory-driven node logic
+- Modular execution via `op_import`
+- Scoped agents with local memory
+- Loops, branching, and conditionals
+- CLI runner: `node index.js <graphfile.json>`
 
-## 🧱 Minimum Viable Language (MVL)
+---
 
-Aegis programs are **graphs** of operations, not text.  
-Each node defines:
-- The operation (`op_compute`, `op_io`, etc.)
-- Inputs and outputs (by node reference)
-- Parameters (e.g., precision, device)
-- Metadata (for audit and traceability)
+## 📦 Usage
 
-Sample node:
+```bash
+npm install
+node index.js samples/agent_basic.json
+```
+
+---
+
+## 🧱 Sample Graph Snippet
+
 ```json
 {
-  "id": "node-abc123",
-  "op": "op_compute",
-  "inputs": ["node-x", "node-y"],
-  "outputs": ["node-z"],
+  "id": "loop-example",
+  "op": "op_loop",
   "params": {
-    "operation": "matmul",
-    "device": "gpu"
+    "from": 1,
+    "to": 5,
+    "var": "i",
+    "body": ["print-i"]
   }
 }
 ```
 
-## 🌍 Open-Source Commitment
+---
 
-Aegis is stewarded by **Bafmin LLC** and released under an open-source license for the benefit of humanity.  
-Our mission: Build an AI-native ecosystem that empowers AI systems to solve the problems humans cannot—while humans guide ethics, values, and purpose.
+## 📁 Repo Structure
 
-## 💡 Get Involved
+- `interpreter/` — Core execution engine
+- `samples/` — Sample graph JSON files
+- `spec/` — Language specification
+- `TODO.md` — Work in progress roadmap
+- `PLANNING.md` — Long-term goals + structure
 
-- Clone the repo.
-- Experiment with the MVL.
-- Submit ideas, issues, and pull requests.
-- Let’s build the AI-native future—**together**.
+---
+Aegis is backed by [Bafmin LLC](https://github.com/bafmin) and stewarted by Phillip Williams.
