@@ -58,6 +58,16 @@ function executeGraph(graph) {
             console.warn("Unknown control op:", node.params.operation);
         }
         break;
+
+      case 'op_loop':
+        const { var: loopVar, from, to, body } = node.params;
+        for (let i = from; i <= to; i++) {
+          memory[loopVar] = i;
+          console.log(`[Loop ${node.id}] ${loopVar} =`, i);
+          body.forEach(nid => evalNode(nodeMap[nid]));
+        }
+        output = to;
+        break;
     }
 
     if (shouldExecute && node.outputs && output !== null) {
