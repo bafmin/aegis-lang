@@ -1,0 +1,47 @@
+{
+  "graph": [
+    {
+      "id": "node-1",
+      "operation": "op_compute",
+      "params": {
+        "outputs": [
+          "val1"
+        ],
+        "value": 5
+      }
+    },
+    {
+      "id": "node-2",
+      "operation": "op_compute",
+      "params": {
+        "outputs": [
+          "val2"
+        ],
+        "value": 7
+      }
+    },
+    {
+      "id": "node-3",
+      "operation": "op_compute",
+      "params": {
+        "inputs": [
+          "val1",
+          "val2"
+        ],
+        "outputs": [
+          "result"
+        ],
+        "compute": "sum"
+      }
+    },
+    {
+      "id": "node-4",
+      "operation": "op_watch",
+      "params": {
+        "inputs": [
+          "result"
+        ]
+      }
+    }
+  ]
+}

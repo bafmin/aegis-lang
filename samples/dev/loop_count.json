@@ -1,0 +1,23 @@
+{
+  "graph": [
+    {
+      "id": "node-1",
+      "operation": "op_loop",
+      "params": {
+        "iterations": 3,
+        "body": [
+          {
+            "id": "loop-node",
+            "operation": "op_compute",
+            "params": {
+              "outputs": [
+                "count"
+              ],
+              "value": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "graph": [
+    {
+      "id": "debug-1",
+      "operation": "op_compute",
+      "params": {
+        "outputs": [
+          "x"
+        ],
+        "value": 5
+      }
+    },
+    {
+      "id": "debug-2",
+      "operation": "op_watch",
+      "params": {
+        "inputs": [
+          "x"
+        ]
+      }
+    },
+    {
+      "id": "debug-3",
+      "operation": "op_debug",
+      "params": {}
+    },
+    {
+      "id": "debug-4",
+      "operation": "op_compute",
+      "params": {
+        "inputs": [
+          "x"
+        ],
+        "outputs": [
+          "double"
+        ],
+        "compute": "double"
+      }
+    }
+  ]
+}

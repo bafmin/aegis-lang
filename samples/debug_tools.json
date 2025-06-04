@@ -1,8 +1,0 @@
-{
-  "nodes": [
-    { "id": "debug-1", "op": "op_compute", "params": { "operation": "assign", "vars": { "answer": 42 } } },
-    { "id": "debug-2", "op": "op_watch", "inputs": ["answer"] },
-    { "id": "debug-3", "op": "op_debug" },
-    { "id": "debug-4", "op": "op_compute", "inputs": ["answer"], "params": { "operation": "print" } }
-  ]
-}

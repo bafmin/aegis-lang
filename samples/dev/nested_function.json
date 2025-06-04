@@ -1,0 +1,79 @@
+{
+  "graph": [
+    {
+      "id": "node-1",
+      "operation": "op_fn",
+      "params": {
+        "name": "add",
+        "body": [
+          {
+            "id": "inner-1",
+            "operation": "op_compute",
+            "params": {
+              "inputs": [
+                "a",
+                "b"
+              ],
+              "outputs": [
+                "sum"
+              ],
+              "compute": "sum"
+            }
+          },
+          {
+            "id": "inner-2",
+            "operation": "op_return",
+            "params": {
+              "inputs": [
+                "sum"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "node-2",
+      "operation": "op_compute",
+      "params": {
+        "outputs": [
+          "x"
+        ],
+        "value": 2
+      }
+    },
+    {
+      "id": "node-3",
+      "operation": "op_compute",
+      "params": {
+        "outputs": [
+          "y"
+        ],
+        "value": 3
+      }
+    },
+    {
+      "id": "node-4",
+      "operation": "op_call",
+      "params": {
+        "function": "add",
+        "inputs": [
+          "x",
+          "y"
+        ],
+        "outputs": [
+          "z"
+        ]
+      }
+    },
+    {
+      "id": "node-5",
+      "operation": "op_watch",
+      "params": {
+        "inputs": [
+          "z"
+        ]
+      }
+    }
+  ]
+}

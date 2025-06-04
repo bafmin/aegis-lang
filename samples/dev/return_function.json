@@ -1,0 +1,79 @@
+{
+  "graph": [
+    {
+      "id": "node-1",
+      "operation": "op_fn",
+      "params": {
+        "name": "sum_fn",
+        "body": [
+          {
+            "id": "sum-node",
+            "operation": "op_compute",
+            "params": {
+              "inputs": [
+                "a",
+                "b"
+              ],
+              "outputs": [
+                "temp"
+              ],
+              "compute": "sum"
+            }
+          },
+          {
+            "id": "ret-node",
+            "operation": "op_return",
+            "params": {
+              "inputs": [
+                "temp"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "node-2",
+      "operation": "op_compute",
+      "params": {
+        "outputs": [
+          "a"
+        ],
+        "value": 20
+      }
+    },
+    {
+      "id": "node-3",
+      "operation": "op_compute",
+      "params": {
+        "outputs": [
+          "b"
+        ],
+        "value": 22
+      }
+    },
+    {
+      "id": "node-4",
+      "operation": "op_call",
+      "params": {
+        "function": "sum_fn",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "outputs": [
+          "sum"
+        ]
+      }
+    },
+    {
+      "id": "node-5",
+      "operation": "op_watch",
+      "params": {
+        "inputs": [
+          "sum"
+        ]
+      }
+    }
+  ]
+}
