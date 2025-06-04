@@ -1,20 +1,6 @@
 {
   "nodes": [
-    {
-      "id": "node-1",
-      "op": "op_compute",
-      "params": {
-        "operation": "assign",
-        "vars": { "answer": 42 }
-      }
-    },
-    {
-      "id": "node-2",
-      "op": "op_compute",
-      "inputs": ["answer"],
-      "params": {
-        "operation": "print"
-      }
-    }
+    { "id": "node-1", "op": "op_compute", "params": { "operation": "assign", "vars": { "x": 42 } } },
+    { "id": "node-2", "op": "op_compute", "inputs": ["x"], "params": { "operation": "print" } }
   ]
 }

@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "node-1",
+      "op": "op_fn"
+    },
+    {
+      "id": "node-2",
+      "op": "op_call",
+      "params": {
+        "body": [
+          {
+            "id": "a",
+            "op": "op_compute",
+            "params": { "operation": "assign", "vars": { "x": 10 } }
+          },
+          {
+            "id": "nested-fn",
+            "op": "op_fn"
+          },
+          {
+            "id": "call-nested",
+            "op": "op_call",
+            "params": {
+              "body": [
+                {
+                  "id": "inner",
+                  "op": "op_compute",
+                  "params": { "operation": "assign", "vars": { "y": 32 } }
+                },
+                {
+                  "id": "ret",
+                  "op": "op_return",
+                  "inputs": ["y"]
+                }
+              ]
+            },
+            "outputs": ["val2"]
+          },
+          {
+            "id": "add",
+            "op": "op_compute",
+            "inputs": ["x", "val2"],
+            "params": { "operation": "add" },
+            "outputs": ["result"]
+          },
+          {
+            "id": "out",
+            "op": "op_return",
+            "inputs": ["result"]
+          }
+        ]
+      },
+      "outputs": ["final"]
+    },
+    {
+      "id": "node-3",
+      "op": "op_compute",
+      "inputs": ["final"],
+      "params": { "operation": "print" }
+    }
+  ]
+}

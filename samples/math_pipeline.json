@@ -1,0 +1,8 @@
+{
+  "nodes": [
+    { "id": "node-1", "op": "op_compute", "params": { "operation": "assign", "vars": { "val1": 10 } } },
+    { "id": "node-2", "op": "op_compute", "params": { "operation": "assign", "vars": { "val2": 32 } } },
+    { "id": "node-3", "op": "op_compute", "inputs": ["val1", "val2"], "params": { "operation": "add" }, "outputs": ["sum"] },
+    { "id": "node-4", "op": "op_compute", "inputs": ["sum"], "params": { "operation": "print" } }
+  ]
+}
