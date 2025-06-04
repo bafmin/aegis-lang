@@ -1,0 +1,42 @@
+
+{
+  "nodes": [
+    {
+      "id": "define-add",
+      "op": "op_fn",
+      "params": {
+        "name": "add_two_numbers",
+        "inputs": ["a", "b"],
+        "outputs": ["sum"],
+        "body": ["add"]
+      }
+    },
+    {
+      "id": "add",
+      "op": "op_compute",
+      "inputs": ["a", "b"],
+      "params": {
+        "operation": "add"
+      },
+      "outputs": ["sum"]
+    },
+    {
+      "id": "use-add",
+      "op": "op_call",
+      "params": {
+        "fn": "add_two_numbers",
+        "args": [10, 32],
+        "results": ["final_result"]
+      }
+    },
+    {
+      "id": "print",
+      "op": "op_compute",
+      "inputs": ["final_result"],
+      "params": {
+        "operation": "print"
+      }
+    }
+  ]
+}
+    
