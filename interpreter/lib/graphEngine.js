@@ -10,13 +10,14 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
   const memory = { ...externalMemory };
   const nodeMap = Object.fromEntries(graph.nodes.map(n => [n.id, n]));
   const executed = new Set();
+  let earlyReturn = false;
 
   function cloneMemory(mem, keys) {
     return keys ? Object.fromEntries(keys.map(k => [k, mem[k]])) : { ...mem };
   }
 
   function evalNode(node) {
-    if (executed.has(node.id)) return;
+    if (executed.has(node.id) || earlyReturn) return;
     const inputs = node.inputs?.map(id => memory[id]) || [];
     let output = null;
     let shouldExecute = true;
@@ -79,9 +80,8 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
         break;
 
       case 'op_fn':
-        const fnName = node.params.name;
-        fnRegistry[fnName] = node;
-        console.log(`[Function Defined] ${fnName}`);
+        fnRegistry[node.params.name] = node;
+        console.log(`[Function Defined] ${node.params.name}`);
         shouldExecute = false;
         break;
 
@@ -95,6 +95,7 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
         fn.params.inputs.forEach((k, i) => fnInputs[k] = node.params.args[i]);
         const scopedC = node.params.scoped;
         const fnMem = scopedC ? { ...fnInputs } : memory;
+        earlyReturn = false;
         fn.params.body.forEach(nid => executeGraph({ nodes: [nodeMap[nid]] }, fnMem, basePath, fnRegistry));
         if (scopedC && fn.params.outputs && node.params.results) {
           fn.params.outputs.forEach((out, i) => memory[node.params.results[i]] = fnMem[out]);
@@ -102,6 +103,15 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
           fn.params.outputs.forEach((out, i) => memory[node.params.results[i]] = memory[out]);
         }
         console.log(`[Function Called] ${node.params.fn} ->`, node.params.results.map(r => memory[r]));
+        shouldExecute = false;
+        break;
+
+      case 'op_return':
+        if (node.params.values) {
+          node.params.values.forEach((val, i) => memory[`return_${i}`] = val);
+        }
+        earlyReturn = true;
+        console.log(`[Return]`, node.params.values || []);
         shouldExecute = false;
         break;
     }
@@ -119,4 +129,3 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
 }
 
 module.exports = { parseGraph, executeGraph };
-    
