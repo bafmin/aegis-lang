@@ -3,8 +3,8 @@ function parseGraph(jsonStr) {
   return JSON.parse(jsonStr);
 }
 
-function executeGraph(graph) {
-  const memory = {};
+function executeGraph(graph, externalMemory = {}) {
+  const memory = { ...externalMemory };
   const nodeMap = Object.fromEntries(graph.nodes.map(n => [n.id, n]));
   const executed = new Set();
 
@@ -67,6 +67,21 @@ function executeGraph(graph) {
           body.forEach(nid => evalNode(nodeMap[nid]));
         }
         output = to;
+        break;
+
+      case 'op_agent':
+        const agentScope = Object.fromEntries((node.params.scope || []).map(key => [key, null]));
+        const agentMemory = { ...agentScope };
+        const agentSteps = node.params.steps || [];
+
+        agentSteps.forEach(stepId => {
+          const stepNode = nodeMap[stepId];
+          executeGraph({ nodes: [stepNode] }, agentMemory);
+        });
+
+        Object.assign(memory, agentMemory); // merge back into global
+        console.log(`[Agent ${node.id}] Final agent memory:`, agentMemory);
+        shouldExecute = false;
         break;
     }
 
