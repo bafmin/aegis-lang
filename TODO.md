@@ -1,30 +1,23 @@
 # TODO — Aegis Core Work Items
 
-## ✅ Recently Added
+## ✅ Completed
 - op_loop
 - op_agent
 - op_import
+- op_fn
+- op_call
 
 ---
 
 ## 🔧 In Progress
-- op_fn (define reusable subgraphs)
-- op_call (call reusable functions)
-- scoped memory rules
+- Scoped memory sandboxing
+- Graph schema validation
 
 ---
 
-## 🧪 Planned Features
+## 🧪 Planned
 - Parallel node execution
 - op_wait / delay control
-- Graph visualizer UI (CLI or browser)
-- AI-agent integration layer
-- Debug mode (step-through execution)
-
----
-
-## 🧰 Developer Experience
-- Add CLI tooling for graph validation
-- Add unit test support
-- Add error tracing/logging for ops
+- Graph visualizer UI
+- Agent interaction layer
 

@@ -1,58 +1,50 @@
 # Aegis — The AI-Native Execution Language
 
-**Aegis** is a graph-based, declarative execution environment designed for **machine-native reasoning**, not human syntax. It's modular, interpretable, and built from the ground up to support agent behavior, symbolic memory, and autonomous computation.
-
-> ✅ First commit: May 2025  
-> 🌐 Spec version: 1.0  
-> 📅 Last updated: 2025-06-04
+**Aegis** is a graph-based, declarative execution environment designed for **machine-native reasoning**, not human syntax. It's modular, interpretable, and built to support agent behavior, symbolic memory, and autonomous computation.
 
 ---
 
 ## 🚀 Features
 
 - Graph-based execution engine (JSON-defined)
-- Built-in op codes: compute, control, agent, import
-- Memory-driven node logic
-- Modular execution via `op_import`
+- Built-in op codes: compute, control, agent, import, loop
+- Modular execution via `op_fn` and `op_call`
 - Scoped agents with local memory
-- Loops, branching, and conditionals
 - CLI runner: `node index.js <graphfile.json>`
 
 ---
 
-## 📦 Usage
+## 🧪 Sample Usage
 
 ```bash
-npm install
-node index.js samples/agent_basic.json
+node index.js samples/function_addition.json
 ```
 
 ---
 
-## 🧱 Sample Graph Snippet
+## 📦 Function Example
 
 ```json
 {
-  "id": "loop-example",
-  "op": "op_loop",
+  "id": "define-add",
+  "op": "op_fn",
   "params": {
-    "from": 1,
-    "to": 5,
-    "var": "i",
-    "body": ["print-i"]
+    "name": "add_two_numbers",
+    "inputs": ["a", "b"],
+    "outputs": ["sum"],
+    "body": ["add"]
   }
 }
 ```
 
----
-
-## 📁 Repo Structure
-
-- `interpreter/` — Core execution engine
-- `samples/` — Sample graph JSON files
-- `spec/` — Language specification
-- `TODO.md` — Work in progress roadmap
-- `PLANNING.md` — Long-term goals + structure
-
----
-Aegis is backed by [Bafmin LLC](https://github.com/bafmin) and stewarted by Phillip Williams.
+```json
+{
+  "id": "use-add",
+  "op": "op_call",
+  "params": {
+    "fn": "add_two_numbers",
+    "args": [10, 32],
+    "results": ["final_result"]
+  }
+}
+```

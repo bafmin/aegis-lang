@@ -1,93 +1,39 @@
 # Aegis Language Specification (v1.0)
 
-_Last Updated: 2025-06-04_
+## Core Ops (Updated)
 
-## Overview
+### `op_fn` — Define Function
 
-Aegis is a graph-defined execution language built to be interpretable by AI agents and machines. It is not optimized for human readability, but for consistent behavior, modularity, and symbolic reasoning.
+Defines a reusable named function with scoped memory.
 
----
-
-## Core Concepts
-
-- **Node:** A unit of logic with an `op` code
-- **Graph:** A list of interconnected nodes
-- **Memory:** Shared dictionary of variable names and values
-- **Execution:** Top-down traversal of node list, respecting branching/loop logic
-
----
-
-## 🧮 Operations
-
-### `op_compute`
-Performs basic operations:
-- `const`, `add`, `multiply`, `gt`, `lt`, `eq`, `print`
-
-### `op_control`
-Conditional logic using:
 ```json
 {
-  "op": "op_control",
+  "id": "define-add",
+  "op": "op_fn",
   "params": {
-    "operation": "if",
-    "true_branch": [...],
-    "false_branch": [...]
+    "name": "add_two_numbers",
+    "inputs": ["a", "b"],
+    "outputs": ["sum"],
+    "body": ["add"]
   }
 }
 ```
 
-### `op_loop`
-Iteration control:
+### `op_call` — Invoke Function
+
 ```json
 {
-  "op": "op_loop",
+  "id": "use-add",
+  "op": "op_call",
   "params": {
-    "from": 1,
-    "to": 5,
-    "var": "i",
-    "body": [...]
+    "fn": "add_two_numbers",
+    "args": [10, 32],
+    "results": ["final_result"]
   }
 }
 ```
 
-### `op_agent`
-Scoped memory execution unit:
-```json
-{
-  "op": "op_agent",
-  "params": {
-    "scope": ["goal"],
-    "steps": ["init-goal", "print-goal"]
-  }
-}
-```
-
-### `op_import`
-Loads and executes an external graph file:
-```json
-{
-  "op": "op_import",
-  "params": {
-    "file": "./samples/subgraph/task.json"
-  }
-}
-```
-
----
-
-## 🧠 Memory Model
-
-- Global memory is passed into the interpreter
-- `op_loop` and `op_agent` can define scoped memory
-- Memory values are overwritten by node outputs
-- Agents merge scoped values back into global memory after execution
-
----
-
-## ⏭ Coming Soon
-
-- `op_fn`, `op_call` for reusable routines
-- Parallel execution
-- Graph schemas for validation
-- Execution metrics/logging
-
+Behavior:
+- Maps args to inputs
+- Executes body in isolated scope
+- Returns mapped output into global memory
