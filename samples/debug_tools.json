@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "id": "set-vars",
+      "op": "op_compute",
+      "params": {
+        "operation": "assign",
+        "vars": {
+          "a": 5,
+          "b": 10
+        }
+      }
+    },
+    {
+      "id": "add",
+      "op": "op_compute",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "outputs": [
+        "sum"
+      ],
+      "params": {
+        "operation": "add"
+      }
+    },
+    {
+      "id": "watch-sum",
+      "op": "op_watch",
+      "inputs": [
+        "sum"
+      ],
+      "params": {
+        "label": "Sum after addition"
+      }
+    },
+    {
+      "id": "debug-memory",
+      "op": "op_debug"
+    },
+    {
+      "id": "pause-execution",
+      "op": "op_break"
+    },
+    {
+      "id": "print-sum",
+      "op": "op_compute",
+      "params": {
+        "operation": "print"
+      },
+      "inputs": [
+        "sum"
+      ]
+    }
+  ]
+}

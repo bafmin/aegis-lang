@@ -1,4 +1,6 @@
-### 🧠 Nested Function Sample
+### 🐛 Debug Tools Sample
 
-`add_and_double(a, b)` calls `multiply_by_2(sum)` using scoped memory.
-- `add_and_double(3, 4)` returns `(3 + 4) * 2 = 14`
+Demonstrates use of:
+- `op_watch` to log specific variables
+- `op_debug` to print full memory state
+- `op_break` to simulate execution pause
