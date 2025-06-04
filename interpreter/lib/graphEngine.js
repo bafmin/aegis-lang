@@ -11,6 +11,10 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
   const nodeMap = Object.fromEntries(graph.nodes.map(n => [n.id, n]));
   const executed = new Set();
 
+  function cloneMemory(mem, keys) {
+    return keys ? Object.fromEntries(keys.map(k => [k, mem[k]])) : { ...mem };
+  }
+
   function evalNode(node) {
     if (executed.has(node.id)) return;
     const inputs = node.inputs?.map(id => memory[id]) || [];
@@ -50,19 +54,27 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
         break;
 
       case 'op_agent':
-        const scope = Object.fromEntries((node.params.scope || []).map(k => [k, null]));
-        const agentMem = { ...scope };
-        node.params.steps.forEach(id => executeGraph({ nodes: [nodeMap[id]] }, agentMem));
-        Object.assign(memory, agentMem);
-        console.log(`[Agent ${node.id}] Final agent memory:`, agentMem);
+        const scopedA = node.params.scoped;
+        const scope = node.params.scope || [];
+        const agentMem = scopedA ? cloneMemory(memory, scope) : memory;
+        node.params.steps.forEach(id => executeGraph({ nodes: [nodeMap[id]] }, agentMem, basePath, fnRegistry));
+        if (scopedA && node.params.outputs) {
+          node.params.outputs.forEach(k => memory[k] = agentMem[k]);
+        }
+        console.log(`[Agent ${node.id}] Final memory:`, agentMem);
         shouldExecute = false;
         break;
 
       case 'op_import':
         const importPath = path.resolve(basePath, node.params.file);
         const subGraph = parseGraph(fs.readFileSync(importPath, 'utf-8'));
-        console.log(`[Import ${node.id}] Executing`, node.params.file);
-        executeGraph(subGraph, memory, path.dirname(importPath), fnRegistry);
+        console.log(`[Import ${node.id}] Executing ${node.params.file}`);
+        const scopedI = node.params.scoped;
+        const importMem = scopedI ? cloneMemory(memory, node.params.scope) : memory;
+        executeGraph(subGraph, importMem, path.dirname(importPath), fnRegistry);
+        if (scopedI && node.params.outputs) {
+          node.params.outputs.forEach(k => memory[k] = importMem[k]);
+        }
         shouldExecute = false;
         break;
 
@@ -81,11 +93,14 @@ function executeGraph(graph, externalMemory = {}, basePath = ".", fnRegistry = {
         }
         const fnInputs = {};
         fn.params.inputs.forEach((k, i) => fnInputs[k] = node.params.args[i]);
-        const localMem = { ...fnInputs };
-        fn.params.body.forEach(nid => evalNode(nodeMap[nid]));
-        fn.params.outputs.forEach((out, i) => {
-          memory[node.params.results[i]] = localMem[out];
-        });
+        const scopedC = node.params.scoped;
+        const fnMem = scopedC ? { ...fnInputs } : memory;
+        fn.params.body.forEach(nid => executeGraph({ nodes: [nodeMap[nid]] }, fnMem, basePath, fnRegistry));
+        if (scopedC && fn.params.outputs && node.params.results) {
+          fn.params.outputs.forEach((out, i) => memory[node.params.results[i]] = fnMem[out]);
+        } else if (!scopedC && fn.params.outputs && node.params.results) {
+          fn.params.outputs.forEach((out, i) => memory[node.params.results[i]] = memory[out]);
+        }
         console.log(`[Function Called] ${node.params.fn} ->`, node.params.results.map(r => memory[r]));
         shouldExecute = false;
         break;
