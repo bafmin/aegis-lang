@@ -1,0 +1,120 @@
+{
+  "nodes": [
+    {
+      "id": "define-fn",
+      "op": "op_fn",
+      "params": {
+        "name": "safe_add",
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "outputs": [
+          "sum"
+        ],
+        "body": [
+          "check-null",
+          "add",
+          "return-sum"
+        ]
+      }
+    },
+    {
+      "id": "check-null",
+      "op": "op_control",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "params": {
+        "operation": "if",
+        "true_branch": [
+          "early-exit"
+        ],
+        "false_branch": []
+      }
+    },
+    {
+      "id": "early-exit",
+      "op": "op_return",
+      "params": {
+        "values": [
+          "null"
+        ]
+      }
+    },
+    {
+      "id": "add",
+      "op": "op_compute",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "outputs": [
+        "sum"
+      ],
+      "params": {
+        "operation": "add"
+      }
+    },
+    {
+      "id": "return-sum",
+      "op": "op_return",
+      "params": {
+        "values": [
+          "sum"
+        ]
+      }
+    },
+    {
+      "id": "call-valid",
+      "op": "op_call",
+      "params": {
+        "fn": "safe_add",
+        "args": [
+          5,
+          7
+        ],
+        "results": [
+          "result1"
+        ],
+        "scoped": true
+      }
+    },
+    {
+      "id": "call-null",
+      "op": "op_call",
+      "params": {
+        "fn": "safe_add",
+        "args": [
+          null,
+          10
+        ],
+        "results": [
+          "result2"
+        ],
+        "scoped": true
+      }
+    },
+    {
+      "id": "print-1",
+      "op": "op_compute",
+      "params": {
+        "operation": "print"
+      },
+      "inputs": [
+        "result1"
+      ]
+    },
+    {
+      "id": "print-2",
+      "op": "op_compute",
+      "params": {
+        "operation": "print"
+      },
+      "inputs": [
+        "result2"
+      ]
+    }
+  ]
+}
