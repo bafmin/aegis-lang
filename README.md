@@ -1,3 +1,4 @@
-### 🔁 Return Operation Sample
+### 🧠 Nested Function Sample
 
-This graph demonstrates `op_return` inside a function `safe_add`. If an input is null, it returns early with `'null'`.
+`add_and_double(a, b)` calls `multiply_by_2(sum)` using scoped memory.
+- `add_and_double(3, 4)` returns `(3 + 4) * 2 = 14`
