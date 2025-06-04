@@ -1,9 +1,12 @@
 
+const fs = require('fs');
+const path = require('path');
+
 function parseGraph(jsonStr) {
   return JSON.parse(jsonStr);
 }
 
-function executeGraph(graph, externalMemory = {}) {
+function executeGraph(graph, externalMemory = {}, basePath = ".") {
   const memory = { ...externalMemory };
   const nodeMap = Object.fromEntries(graph.nodes.map(n => [n.id, n]));
   const executed = new Set();
@@ -81,6 +84,15 @@ function executeGraph(graph, externalMemory = {}) {
 
         Object.assign(memory, agentMemory); // merge back into global
         console.log(`[Agent ${node.id}] Final agent memory:`, agentMemory);
+        shouldExecute = false;
+        break;
+
+      case 'op_import':
+        const importPath = path.resolve(basePath, node.params.file);
+        const subGraphStr = fs.readFileSync(importPath, 'utf-8');
+        const subGraph = parseGraph(subGraphStr);
+        console.log(`[Import ${node.id}] Executing`, node.params.file);
+        executeGraph(subGraph, memory, path.dirname(importPath));
         shouldExecute = false;
         break;
     }

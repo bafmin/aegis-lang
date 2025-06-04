@@ -1,0 +1,14 @@
+
+{
+  "nodes": [
+    {
+      "id": "say-hello",
+      "op": "op_compute",
+      "params": {
+        "operation": "print",
+        "value": "Hello from imported graph!"
+      }
+    }
+  ]
+}
+    

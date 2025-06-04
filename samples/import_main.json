@@ -1,0 +1,13 @@
+
+{
+  "nodes": [
+    {
+      "id": "import-task",
+      "op": "op_import",
+      "params": {
+        "file": "./samples/subgraph/task.json"
+      }
+    }
+  ]
+}
+    
