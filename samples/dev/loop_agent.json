@@ -1,0 +1,21 @@
+
+{
+  "graph": [
+    {
+      "id": "loop-1",
+      "operation": "op_loop",
+      "params": {
+        "times": 3,
+        "body": [
+          {
+            "id": "loop-1a",
+            "operation": "op_log",
+            "params": {
+              "message": "This is a loop iteration."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
