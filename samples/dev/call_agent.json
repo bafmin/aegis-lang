@@ -1,0 +1,30 @@
+
+{
+  "graph": [
+    {
+      "id": "c1",
+      "operation": "op_input",
+      "params": {
+        "map": {
+          "name": "user.name"
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "operation": "op_call",
+      "params": {
+        "function": "tools.greet",
+        "args": ["$name"],
+        "output": "greeting"
+      }
+    },
+    {
+      "id": "c3",
+      "operation": "op_watch",
+      "params": {
+        "inputs": ["greeting"]
+      }
+    }
+  ]
+}

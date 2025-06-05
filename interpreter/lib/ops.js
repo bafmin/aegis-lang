@@ -1,5 +1,6 @@
 
 const { handleImport } = require("./graphEngine");
+const { tools } = require("./functions");
 
 function op_log(id, params, memory) {
   console.log(`[${id}] Log:`, params.message || "(no message)");
@@ -76,17 +77,31 @@ function op_return(id, params, memory) {
   throw { __aegisReturn: true, value };
 }
 
-function resolvePath(obj, path) {
-  return path.split(".").reduce((acc, key) => acc && acc[key], obj);
-}
-
 function op_input(id, params, memory) {
   const { map = {} } = params;
   for (const [target, sourcePath] of Object.entries(map)) {
-    const value = resolvePath(memory, sourcePath);
+    const value = sourcePath.split(".").reduce((obj, key) => obj && obj[key], memory);
     memory[target] = value;
     console.log(`[${id}] Injected: ${target} = ${value}`);
   }
+}
+
+function op_call(id, params, memory) {
+  const { function: fnPath, args = [], output } = params;
+  const fn = fnPath.split(".").reduce((ref, key) => ref && ref[key], { tools });
+
+  if (typeof fn !== "function") {
+    console.warn(`[${id}] Function not found: ${fnPath}`);
+    return;
+  }
+
+  const resolvedArgs = args.map(arg =>
+    typeof arg === "string" && arg.startsWith("$") ? memory[arg.slice(1)] : arg
+  );
+
+  const result = fn(...resolvedArgs);
+  if (output) memory[output] = result;
+  console.log(`[${id}] Called ${fnPath} → ${result}`);
 }
 
 module.exports = {
@@ -97,5 +112,6 @@ module.exports = {
   op_if,
   op_loop,
   op_return,
-  op_input
+  op_input,
+  op_call
 };
