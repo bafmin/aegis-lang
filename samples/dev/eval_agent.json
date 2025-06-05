@@ -1,38 +1,39 @@
-
 {
   "graph": [
     {
-      "id": "s1",
-      "operation": "op_compute",
+      "id": "e1",
+      "operation": "op_set",
       "params": {
-        "outputs": ["value", "flag"],
-        "value": 10
+        "key": "x",
+        "value": 6
       }
     },
     {
-      "id": "s2",
-      "operation": "op_if",
+      "id": "e2",
+      "operation": "op_set",
       "params": {
-        "condition": {
-          "eval": "memory.value > 5"
-        },
-        "then": [
-          {
-            "id": "s2a",
-            "operation": "op_log",
-            "params": {
-              "message": "Eval passed"
-            }
-          }
-        ],
-        "else": [
-          {
-            "id": "s2b",
-            "operation": "op_log",
-            "params": {
-              "message": "Eval failed"
-            }
-          }
+        "key": "y",
+        "value": 7
+      }
+    },
+    {
+      "id": "e3",
+      "operation": "op_eval",
+      "params": {
+        "expression": "x * y + 10",
+        "outputs": [
+          "result"
+        ]
+      }
+    },
+    {
+      "id": "e4",
+      "operation": "op_watch",
+      "params": {
+        "inputs": [
+          "x",
+          "y",
+          "result"
         ]
       }
     }

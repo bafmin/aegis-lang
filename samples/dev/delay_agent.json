@@ -1,0 +1,25 @@
+{
+  "graph": [
+    {
+      "id": "d1",
+      "operation": "op_log",
+      "params": {
+        "message": "Start"
+      }
+    },
+    {
+      "id": "d2",
+      "operation": "op_delay",
+      "params": {
+        "ms": 1500
+      }
+    },
+    {
+      "id": "d3",
+      "operation": "op_log",
+      "params": {
+        "message": "End"
+      }
+    }
+  ]
+}

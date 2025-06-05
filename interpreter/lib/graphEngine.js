@@ -1,45 +1,51 @@
 
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
+const ops = require("./ops");
 
-function executeGraph(graph, memory = {}, functions = {}, basePath = process.cwd()) {
-  for (const node of graph) {
-    const { id, operation, op, params } = node;
-    const actualOp = operation || op;
-    console.log(`[${id}] Operation: ${actualOp}`);
-    const fn = functions[actualOp];
-    if (!fn) {
-      console.error(`Unknown operation: ${actualOp}`);
-      continue;
+function executeGraph(graph, memory = {}, functions = {}) {
+  let currentIndex = 0;
+
+  function runNext() {
+    if (currentIndex >= graph.length) return;
+
+    const node = graph[currentIndex];
+    const { id, operation, params } = node;
+
+    const opFunc = ops[operation];
+    console.log(`[${id}] Operation: ${operation}`);
+
+    if (!opFunc) {
+      console.log(`Unknown operation: ${operation}`);
+      currentIndex++;
+      runNext();
+      return;
     }
-    try {
-      fn(id, params, memory, functions, basePath);
-    } catch (e) {
-      if (e.__aegisReturn) {
-        memory["__return"] = e.value;
-        console.log(`[${id}] Graph halted via return`);
-        break;
-      } else {
-        throw e;
-      }
+
+    // Check if function expects a callback (async)
+    if (opFunc.length === 4) {
+      opFunc(id, params, memory, () => {
+        currentIndex++;
+        runNext();
+      });
+    } else {
+      opFunc(id, params, memory, functions);
+      currentIndex++;
+      runNext();
     }
   }
+
+  runNext();
 }
 
-function handleImport(id, params, memory, functions, basePath) {
-  const { path: importPath, scope = "global" } = params;
-  const fullImportPath = path.resolve(basePath, importPath);
-  console.log(`[op_import] Importing: ${importPath} (${scope})`);
-  const data = fs.readFileSync(fullImportPath, "utf-8");
-  const imported = JSON.parse(data);
-  const contextMemory = scope === "scoped" ? {} : memory;
-  executeGraph(imported.graph, contextMemory, functions, path.dirname(fullImportPath));
-  if (scope === "scoped") {
-    Object.assign(memory, contextMemory);
-  }
+function loadGraph(filepath, memory = {}, functions = {}) {
+  const fullPath = path.resolve(__dirname, filepath);
+  const data = fs.readFileSync(fullPath, "utf-8");
+  const parsed = JSON.parse(data);
+  executeGraph(parsed.graph, memory, functions);
 }
 
 module.exports = {
   executeGraph,
-  handleImport
+  loadGraph,
 };

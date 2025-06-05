@@ -1,0 +1,28 @@
+{
+  "graph": [
+    {
+      "id": "p1",
+      "operation": "op_prompt",
+      "params": {
+        "message": "What is your favorite color?",
+        "key": "favoriteColor"
+      }
+    },
+    {
+      "id": "p2",
+      "operation": "op_log",
+      "params": {
+        "message": "Color received"
+      }
+    },
+    {
+      "id": "p3",
+      "operation": "op_watch",
+      "params": {
+        "inputs": [
+          "favoriteColor"
+        ]
+      }
+    }
+  ]
+}

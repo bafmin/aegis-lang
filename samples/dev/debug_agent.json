@@ -1,0 +1,38 @@
+{
+  "graph": [
+    {
+      "id": "d1",
+      "operation": "op_set",
+      "params": {
+        "key": "status",
+        "value": "running"
+      }
+    },
+    {
+      "id": "d2",
+      "operation": "op_set",
+      "params": {
+        "key": "counter",
+        "value": 5
+      }
+    },
+    {
+      "id": "d3",
+      "operation": "op_debug",
+      "params": {
+        "inputs": [
+          "status",
+          "counter"
+        ],
+        "message": "Initial state"
+      }
+    },
+    {
+      "id": "d4",
+      "operation": "op_debug",
+      "params": {
+        "message": "Full memory dump"
+      }
+    }
+  ]
+}

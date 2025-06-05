@@ -1,0 +1,37 @@
+{
+  "graph": [
+    {
+      "id": "f1",
+      "operation": "op_fork",
+      "params": {
+        "branches": [
+          [
+            {
+              "id": "f1a",
+              "operation": "op_log",
+              "params": {
+                "message": "Fork \u2192 Branch A"
+              }
+            }
+          ],
+          [
+            {
+              "id": "f1b",
+              "operation": "op_log",
+              "params": {
+                "message": "Fork \u2192 Branch B"
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "f2",
+      "operation": "op_log",
+      "params": {
+        "message": "Fork complete"
+      }
+    }
+  ]
+}

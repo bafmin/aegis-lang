@@ -1,0 +1,29 @@
+{
+  "graph": [
+    {
+      "id": "r1",
+      "operation": "op_set",
+      "params": {
+        "key": "x",
+        "value": "value"
+      }
+    },
+    {
+      "id": "r2",
+      "operation": "op_require",
+      "params": {
+        "keys": [
+          "x",
+          "y"
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "operation": "op_log",
+      "params": {
+        "message": "All required keys are present."
+      }
+    }
+  ]
+}

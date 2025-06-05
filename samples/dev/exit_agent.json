@@ -1,0 +1,26 @@
+{
+  "graph": [
+    {
+      "id": "x1",
+      "operation": "op_log",
+      "params": {
+        "message": "Before exit"
+      }
+    },
+    {
+      "id": "x2",
+      "operation": "op_exit",
+      "params": {
+        "message": "Graph terminated intentionally",
+        "code": 0
+      }
+    },
+    {
+      "id": "x3",
+      "operation": "op_log",
+      "params": {
+        "message": "This should not appear"
+      }
+    }
+  ]
+}
