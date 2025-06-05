@@ -1,0 +1,20 @@
+{
+  "graph": [
+    { "id": "n1", "operation": "op_compute", "params": { "outputs": ["a"], "value": 5 } },
+    { "id": "n2", "operation": "op_compute", "params": { "outputs": ["b"], "value": 10 } },
+    {
+      "id": "n3",
+      "operation": "op_if",
+      "params": {
+        "condition": { "left": "a", "op": "lt", "right": "b" },
+        "then": [
+          { "id": "n3a", "operation": "op_compute", "params": { "outputs": ["result"], "value": "less" } }
+        ],
+        "else": [
+          { "id": "n3b", "operation": "op_compute", "params": { "outputs": ["result"], "value": "greater_or_equal" } }
+        ]
+      }
+    },
+    { "id": "n4", "operation": "op_watch", "params": { "inputs": ["result"] } }
+  ]
+}

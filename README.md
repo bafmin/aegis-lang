@@ -43,9 +43,7 @@ aegis-lang/
 │   ├── index.js                 # Entry point
 │   └── lib/
 │       └── graphEngine.js       # Core graph execution engine
-├── samples/
-│   ├── verified/                # Stable, passing graph programs
-│   └── dev/                     # Experimental graphs under construction
+├── samples/                     # Aegis programs (JSON graph definitions)
 ├── mvl_spec/
 │   └── spec-v1.md               # Minimal Viable Language spec
 ├── TODO.md
@@ -63,15 +61,16 @@ From the project root:
 
 ```bash
 cd interpreter
-node index.js ../samples/verified/math_pipeline.json
+node index.js ../samples/math_pipeline.json
 ```
 
-You can replace `math_pipeline.json` with any of the verified sample files:
+You can replace `math_pipeline.json` with any of the sample files:
 
 - `basic_graph.json`
-- `math_pipeline.json`
-
-> For experimental ops, use files in `samples/dev/` but expect partial support.
+- `loop_count.json`
+- `return_function.json`
+- `nested_function.json`
+- `debug_tools.json`
 
 ---
 
@@ -80,7 +79,11 @@ You can replace `math_pipeline.json` with any of the verified sample files:
 The initial set of operations (`ops`) supported:
 
 - `op_compute`: assign, add, subtract, multiply, divide, print
-- `op_watch`: log memory value to console
+- `op_fn`: define function context
+- `op_call`: call defined function
+- `op_return`: return value from function
+- `op_loop`: iterate with counter
+- `op_watch`, `op_debug`, `op_break`: developer introspection tools
 
 📝 Full spec: [MVL v1](./mvl_spec/spec-v1.md)
 
