@@ -1,0 +1,42 @@
+{
+  "graph": [
+    {
+      "id": "s1",
+      "operation": "op_set",
+      "params": {
+        "key": "outside.value",
+        "value": 100
+      }
+    },
+    {
+      "id": "s2",
+      "operation": "op_scope",
+      "params": {
+        "body": [
+          {
+            "id": "s2a",
+            "operation": "op_set",
+            "params": {
+              "key": "outside.value",
+              "value": 999
+            }
+          },
+          {
+            "id": "s2b",
+            "operation": "op_watch",
+            "params": {
+              "inputs": ["outside.value"]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "s3",
+      "operation": "op_watch",
+      "params": {
+        "inputs": ["outside.value"]
+      }
+    }
+  ]
+}

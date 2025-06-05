@@ -155,7 +155,24 @@ function op_append(id, params, memory) {
   console.log(`[${id}] Appended to ${list}: ${value}`);
 }
 
+
+function op_scope(id, params, memory, functions, basePath) {
+  const { body = [] } = params;
+  const clonedMemory = JSON.parse(JSON.stringify(memory));
+  const { executeGraph } = require("./graphEngine");
+
+  console.log(`[${id}] Entering scoped memory context`);
+  try {
+    executeGraph(body, clonedMemory, functions, basePath);
+  } catch (err) {
+    if (!err.__aegisReturn) throw err;
+    console.warn(`[${id}] Scoped return: ${err.value}`);
+  }
+  console.log(`[${id}] Exiting scoped memory context`);
+}
+
 module.exports = {
+  op_scope,
   op_import: handleImport,
   op_log,
   op_compute,
