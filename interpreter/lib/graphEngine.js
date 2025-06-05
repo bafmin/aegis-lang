@@ -1,10 +1,8 @@
-// graphEngine.js
 
 function executeGraph(graph, memory = {}) {
   for (const node of graph) {
     const { id, operation, params } = node;
     console.log(`[${id}] Operation: ${operation}`);
-
     switch (operation) {
       case 'op_compute':
         handleCompute(params, memory);
@@ -13,41 +11,43 @@ function executeGraph(graph, memory = {}) {
         handleWatch(id, params, memory);
         break;
       case 'op_if':
-        handleIf(params, memory);
+        handleIf(params, memory, graph);
+        break;
+      case 'op_loop':
+        handleLoop(id, params, memory);
         break;
       default:
         console.warn(`[${id}] Unknown operation: ${operation}`);
     }
   }
-
-  console.log('\nFinal memory state:', memory);
+  return memory;
 }
 
 function handleCompute(params, memory) {
   const { inputs = [], outputs = [], value, compute } = params;
-  if (!outputs || outputs.length === 0) return;
 
-  if (value !== undefined) {
+  // Simple assignment
+  if (value !== undefined && outputs.length === 1) {
     memory[outputs[0]] = value;
     return;
   }
 
-  if (inputs.length >= 2 && compute) {
-    const a = memory[inputs[0]];
-    const b = memory[inputs[1]];
+  // Arithmetic operations
+  if (inputs.length === 2 && outputs.length === 1 && compute) {
+    const [a, b] = inputs.map(k => memory[k]);
     let result;
 
     switch (compute) {
-      case 'sum':
+      case 'add':
         result = a + b;
         break;
-      case 'sub':
+      case 'subtract':
         result = a - b;
         break;
-      case 'mul':
+      case 'multiply':
         result = a * b;
         break;
-      case 'div':
+      case 'divide':
         result = b !== 0 ? a / b : null;
         break;
       default:
@@ -60,13 +60,14 @@ function handleCompute(params, memory) {
 }
 
 function handleWatch(id, params, memory) {
-  const { inputs = [] } = params;
+  const { inputs } = params;
+  if (!inputs) return;
   for (const key of inputs) {
     console.log(`[${id}] WATCH ${key} -> ${memory[key]}`);
   }
 }
 
-function handleIf(params, memory) {
+function handleIf(params, memory, graph) {
   const { condition, then, else: elseBranch } = params;
   if (!condition || typeof condition !== 'object') return;
 
@@ -82,14 +83,23 @@ function handleIf(params, memory) {
     case 'lt': conditionMet = a < b; break;
     case 'gte': conditionMet = a >= b; break;
     case 'lte': conditionMet = a <= b; break;
-    default:
-      console.warn(`Unknown condition operator: ${op}`);
-      return;
   }
 
   const branch = conditionMet ? then : elseBranch;
   if (Array.isArray(branch)) {
     for (const subNode of branch) {
+      executeGraph([subNode], memory);
+    }
+  }
+}
+
+function handleLoop(id, params, memory) {
+  const { var: loopVar, from, to, step = 1, body } = params;
+  if (!loopVar || !Array.isArray(body)) return;
+
+  for (let i = from; i <= to; i += step) {
+    memory[loopVar] = i;
+    for (const subNode of body) {
       executeGraph([subNode], memory);
     }
   }

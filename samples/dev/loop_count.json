@@ -1,19 +1,27 @@
 {
   "graph": [
     {
-      "id": "node-1",
+      "id": "loop-1",
       "operation": "op_loop",
       "params": {
-        "iterations": 3,
+        "var": "i",
+        "from": 1,
+        "to": 3,
         "body": [
           {
-            "id": "loop-node",
+            "id": "body-1",
             "operation": "op_compute",
             "params": {
-              "outputs": [
-                "count"
-              ],
-              "value": 1
+              "inputs": ["i", "i"],
+              "outputs": ["squared"],
+              "compute": "multiply"
+            }
+          },
+          {
+            "id": "body-2",
+            "operation": "op_watch",
+            "params": {
+              "inputs": ["i", "squared"]
             }
           }
         ]
