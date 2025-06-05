@@ -31,13 +31,27 @@ function op_watch(id, params, memory) {
   console.log(`[${id}] Watch -> ${snapshot}`);
 }
 
+function safeEval(expr, memory) {
+  try {
+    const result = Function("memory", `return (${expr});`)(memory);
+    return !!result;
+  } catch (e) {
+    console.warn(`[eval] Error evaluating: "${expr}" → ${e.message}`);
+    return false;
+  }
+}
+
 function op_if(id, params, memory, functions, basePath) {
   const { condition, then: thenGraph = [], else: elseGraph = [] } = params;
   let result = false;
 
-  if (condition && condition.equals) {
-    const [key, value] = condition.equals;
-    result = memory[key] === value;
+  if (condition) {
+    if (condition.equals) {
+      const [key, value] = condition.equals;
+      result = memory[key] === value;
+    } else if (condition.eval) {
+      result = safeEval(condition.eval, memory);
+    }
   }
 
   const branch = result ? thenGraph : elseGraph;

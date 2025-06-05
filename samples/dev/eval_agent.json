@@ -1,0 +1,40 @@
+
+{
+  "graph": [
+    {
+      "id": "s1",
+      "operation": "op_compute",
+      "params": {
+        "outputs": ["value", "flag"],
+        "value": 10
+      }
+    },
+    {
+      "id": "s2",
+      "operation": "op_if",
+      "params": {
+        "condition": {
+          "eval": "memory.value > 5"
+        },
+        "then": [
+          {
+            "id": "s2a",
+            "operation": "op_log",
+            "params": {
+              "message": "Eval passed"
+            }
+          }
+        ],
+        "else": [
+          {
+            "id": "s2b",
+            "operation": "op_log",
+            "params": {
+              "message": "Eval failed"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
