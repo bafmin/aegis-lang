@@ -76,6 +76,19 @@ function op_return(id, params, memory) {
   throw { __aegisReturn: true, value };
 }
 
+function resolvePath(obj, path) {
+  return path.split(".").reduce((acc, key) => acc && acc[key], obj);
+}
+
+function op_input(id, params, memory) {
+  const { map = {} } = params;
+  for (const [target, sourcePath] of Object.entries(map)) {
+    const value = resolvePath(memory, sourcePath);
+    memory[target] = value;
+    console.log(`[${id}] Injected: ${target} = ${value}`);
+  }
+}
+
 module.exports = {
   op_import: handleImport,
   op_log,
@@ -83,5 +96,6 @@ module.exports = {
   op_watch,
   op_if,
   op_loop,
-  op_return
+  op_return,
+  op_input
 };

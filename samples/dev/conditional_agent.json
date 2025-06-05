@@ -1,0 +1,40 @@
+
+{
+  "graph": [
+    {
+      "id": "c1",
+      "operation": "op_compute",
+      "params": {
+        "outputs": ["x"],
+        "value": 42
+      }
+    },
+    {
+      "id": "c2",
+      "operation": "op_if",
+      "params": {
+        "condition": {
+          "equals": ["x", 42]
+        },
+        "then": [
+          {
+            "id": "c2a",
+            "operation": "op_log",
+            "params": {
+              "message": "The answer is correct."
+            }
+          }
+        ],
+        "else": [
+          {
+            "id": "c2b",
+            "operation": "op_log",
+            "params": {
+              "message": "Nope, try again."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

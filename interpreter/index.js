@@ -7,7 +7,15 @@ function loadGraph(filePath) {
   const fullPath = path.resolve(filePath);
   const graphData = JSON.parse(fs.readFileSync(fullPath, "utf-8"));
   const basePath = path.dirname(fullPath);
-  executeGraph(graphData.graph, {}, require("./lib/ops"), basePath);
+
+  const memory = {
+    user: {
+      name: "Phillip",
+      email: "phillip@example.com"
+    }
+  };
+
+  executeGraph(graphData.graph, memory, require("./lib/ops"), basePath);
 }
 
 const inputFile = process.argv[2];

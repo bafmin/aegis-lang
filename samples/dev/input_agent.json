@@ -1,0 +1,29 @@
+
+{
+  "graph": [
+    {
+      "id": "i1",
+      "operation": "op_input",
+      "params": {
+        "map": {
+          "username": "user.name",
+          "email": "user.email"
+        }
+      }
+    },
+    {
+      "id": "i2",
+      "operation": "op_log",
+      "params": {
+        "message": "Welcome user"
+      }
+    },
+    {
+      "id": "i3",
+      "operation": "op_watch",
+      "params": {
+        "inputs": ["username", "email"]
+      }
+    }
+  ]
+}
