@@ -1,0 +1,29 @@
+
+{
+  "graph": [
+    {
+      "id": "t1",
+      "operation": "op_try",
+      "params": {
+        "try": [
+          {
+            "id": "t1a",
+            "operation": "op_call",
+            "params": {
+              "function": "tools.fail"
+            }
+          }
+        ],
+        "catch": [
+          {
+            "id": "t1b",
+            "operation": "op_log",
+            "params": {
+              "message": "Recovered from failure"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

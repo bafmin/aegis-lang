@@ -104,6 +104,18 @@ function op_call(id, params, memory) {
   console.log(`[${id}] Called ${fnPath} → ${result}`);
 }
 
+function op_try(id, params, memory, functions, basePath) {
+  const { try: tryBlock = [], catch: catchBlock = [] } = params;
+  const { executeGraph } = require("./graphEngine");
+
+  try {
+    executeGraph(tryBlock, memory, functions, basePath);
+  } catch (err) {
+    console.warn(`[${id}] Error caught: ${err.message || err}`);
+    executeGraph(catchBlock, memory, functions, basePath);
+  }
+}
+
 module.exports = {
   op_import: handleImport,
   op_log,
@@ -113,5 +125,6 @@ module.exports = {
   op_loop,
   op_return,
   op_input,
-  op_call
+  op_call,
+  op_try
 };
