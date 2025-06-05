@@ -1,0 +1,13 @@
+
+{
+  "graph": [
+    {
+      "id": "import-1",
+      "op": "op_import",
+      "params": {
+        "path": "../verified/basic_graph.json",
+        "scope": "scoped"
+      }
+    }
+  ]
+}

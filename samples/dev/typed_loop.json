@@ -1,0 +1,30 @@
+{
+  "graph": [
+    {
+      "id": "loop-1",
+      "operation": "op_loop",
+      "params": {
+        "range": [1, 4],
+        "body": [
+          {
+            "id": "body-1",
+            "operation": "op_compute",
+            "params": {
+              "inputs": ["i"],
+              "outputs": ["squared"],
+              "compute": "mul",
+              "type": "int"
+            }
+          },
+          {
+            "id": "body-2",
+            "operation": "op_watch",
+            "params": {
+              "inputs": ["i", "squared"]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

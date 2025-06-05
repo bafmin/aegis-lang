@@ -4,43 +4,35 @@
       "id": "n1",
       "operation": "op_compute",
       "params": {
-        "outputs": [
-          "a"
-        ],
-        "value": 5
+        "outputs": ["a"],
+        "value": 5,
+        "type": "int"
       }
     },
     {
       "id": "n2",
       "operation": "op_compute",
       "params": {
-        "outputs": [
-          "b"
-        ],
-        "value": 7
+        "outputs": ["b"],
+        "value": 10,
+        "type": "int"
       }
     },
     {
       "id": "n3",
       "operation": "op_compute",
       "params": {
-        "inputs": [
-          "a",
-          "b"
-        ],
-        "outputs": [
-          "sum"
-        ],
-        "compute": "sum"
+        "inputs": ["a", "b"],
+        "outputs": ["c"],
+        "compute": "sum",
+        "type": "int"
       }
     },
     {
       "id": "n4",
       "operation": "op_watch",
       "params": {
-        "inputs": [
-          "sum"
-        ]
+        "inputs": ["c"]
       }
     }
   ]
