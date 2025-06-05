@@ -5,6 +5,13 @@
       "operation": "op_fn",
       "params": {
         "name": "add",
+        "args": [
+          "a",
+          "b"
+        ],
+        "returns": [
+          "sum"
+        ],
         "body": [
           {
             "id": "inner-1",
