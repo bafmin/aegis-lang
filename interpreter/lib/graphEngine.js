@@ -4,14 +4,25 @@ const fs = require("fs");
 
 function executeGraph(graph, memory = {}, functions = {}, basePath = process.cwd()) {
   for (const node of graph) {
-    const { id, op, params } = node;
-    console.log(`[${id}] Operation: ${op}`);
-    const fn = functions[op];
+    const { id, operation, op, params } = node;
+    const actualOp = operation || op;
+    console.log(`[${id}] Operation: ${actualOp}`);
+    const fn = functions[actualOp];
     if (!fn) {
-      console.error(`Unknown operation: ${op}`);
+      console.error(`Unknown operation: ${actualOp}`);
       continue;
     }
-    fn(id, params, memory, functions, basePath);
+    try {
+      fn(id, params, memory, functions, basePath);
+    } catch (e) {
+      if (e.__aegisReturn) {
+        memory["__return"] = e.value;
+        console.log(`[${id}] Graph halted via return`);
+        break;
+      } else {
+        throw e;
+      }
+    }
   }
 }
 

@@ -1,0 +1,26 @@
+
+{
+  "graph": [
+    {
+      "id": "r1",
+      "operation": "op_log",
+      "params": {
+        "message": "Start"
+      }
+    },
+    {
+      "id": "r2",
+      "operation": "op_return",
+      "params": {
+        "value": "Finished early"
+      }
+    },
+    {
+      "id": "r3",
+      "operation": "op_log",
+      "params": {
+        "message": "This should not execute"
+      }
+    }
+  ]
+}

@@ -33,8 +33,7 @@ function op_watch(id, params, memory) {
 
 function safeEval(expr, memory) {
   try {
-    const result = Function("memory", `return (${expr});`)(memory);
-    return !!result;
+    return !!Function("memory", `return (${expr});`)(memory);
   } catch (e) {
     console.warn(`[eval] Error evaluating: "${expr}" → ${e.message}`);
     return false;
@@ -71,11 +70,18 @@ function op_loop(id, params, memory, functions, basePath) {
   }
 }
 
+function op_return(id, params, memory) {
+  const value = params.value;
+  console.log(`[${id}] Returning: ${value}`);
+  throw { __aegisReturn: true, value };
+}
+
 module.exports = {
   op_import: handleImport,
   op_log,
   op_compute,
   op_watch,
   op_if,
-  op_loop
+  op_loop,
+  op_return
 };
