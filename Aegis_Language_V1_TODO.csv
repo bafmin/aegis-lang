@@ -1,0 +1,26 @@
+Task,Status,Notes
+Finalize MVL spec v1,Complete,Spec finalized and documented
+Support op_compute,Complete,Handles basic math and assign ops
+Support op_watch,Complete,Logs memory values
+Add op_if branching,Complete,Supports conditional logic paths
+Implement op_loop,Complete,Loop over fixed iterations with scoped memory
+Add op_fn and op_call,Complete,Define and invoke functions with return support
+Implement op_return,Complete,Return from a function with memory values
+Support scoped memory for functions and loops,Complete,Maintains local execution context
+Support nested function calls,Complete,Graph can call graph-defined functions recursively
+Improve error handling and validation,Complete,Skips malformed nodes with warnings
+Refactor graphEngine for modular ops,Complete,Separation of concern for each op
+Organize sample graphs into verified/dev,Complete,samples/verified and samples/dev structure
+"Update README, TODO, PLANNING docs",Complete,Current with latest ops and usage
+"Add unit testing framework (e.g., Jest)",Todo,Allow for automated regression testing
+Add CLI runner and input/output JSON support,Todo,Make interpreter more script-friendly
+Support op_import,Todo,Load external graph files into execution context
+Support op_agent,Todo,Define agents with independent memory and logic
+Add persistent runtime shell,Todo,REPL-like interface for long-running agent memory
+Add type inference and runtime checks,Todo,Prevent invalid operations at runtime
+Add serialization format for compiled graphs,Todo,Binary or compact format for execution
+Document full Aegis grammar and serialization spec,Todo,Formal docs for compiler target use
+Benchmark interpreter performance,Todo,Ensure large graphs are performant
+Add op_debug and op_break,Todo,Enable introspection and pausing during graph execution
+Create developer plugin system,Todo,Let contributors define new ops externally
+V1 packaging and CLI install via npm,Todo,npm install aegis-lang for CLI access

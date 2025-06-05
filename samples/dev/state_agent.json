@@ -1,0 +1,28 @@
+
+{
+  "graph": [
+    {
+      "id": "s1",
+      "operation": "op_set",
+      "params": {
+        "key": "session.status",
+        "value": "active"
+      }
+    },
+    {
+      "id": "s2",
+      "operation": "op_append",
+      "params": {
+        "list": "session.log",
+        "value": "started"
+      }
+    },
+    {
+      "id": "s3",
+      "operation": "op_watch",
+      "params": {
+        "inputs": ["session.status", "session.log"]
+      }
+    }
+  ]
+}

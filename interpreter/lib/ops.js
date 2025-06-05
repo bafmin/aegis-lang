@@ -2,6 +2,10 @@
 const { handleImport } = require("./graphEngine");
 const { tools } = require("./functions");
 
+function resolvePath(obj, path) {
+  return path.split(".").reduce((acc, key) => acc && acc[key], obj);
+}
+
 function op_log(id, params, memory) {
   console.log(`[${id}] Log:`, params.message || "(no message)");
 }
@@ -28,7 +32,7 @@ function op_compute(id, params, memory) {
 
 function op_watch(id, params, memory) {
   const { inputs = [] } = params;
-  const snapshot = inputs.map(key => `${key}: ${memory[key]}`).join(", ");
+  const snapshot = inputs.map(key => `${key}: ${resolvePath(memory, key)}`).join(", ");
   console.log(`[${id}] Watch -> ${snapshot}`);
 }
 
@@ -80,7 +84,7 @@ function op_return(id, params, memory) {
 function op_input(id, params, memory) {
   const { map = {} } = params;
   for (const [target, sourcePath] of Object.entries(map)) {
-    const value = sourcePath.split(".").reduce((obj, key) => obj && obj[key], memory);
+    const value = resolvePath(memory, sourcePath);
     memory[target] = value;
     console.log(`[${id}] Injected: ${target} = ${value}`);
   }
@@ -116,6 +120,41 @@ function op_try(id, params, memory, functions, basePath) {
   }
 }
 
+function op_set(id, params, memory) {
+  const { key, value } = params;
+  const parts = key.split(".");
+  let target = memory;
+
+  while (parts.length > 1) {
+    const part = parts.shift();
+    if (!(part in target)) target[part] = {};
+    target = target[part];
+  }
+
+  target[parts[0]] = value;
+  console.log(`[${id}] Set ${key} = ${value}`);
+}
+
+function op_append(id, params, memory) {
+  const { list, value } = params;
+  const parts = list.split(".");
+  let target = memory;
+
+  while (parts.length > 1) {
+    const part = parts.shift();
+    if (!(part in target)) target[part] = {};
+    target = target[part];
+  }
+
+  const finalKey = parts[0];
+  if (!Array.isArray(target[finalKey])) {
+    target[finalKey] = [];
+  }
+
+  target[finalKey].push(value);
+  console.log(`[${id}] Appended to ${list}: ${value}`);
+}
+
 module.exports = {
   op_import: handleImport,
   op_log,
@@ -126,5 +165,7 @@ module.exports = {
   op_return,
   op_input,
   op_call,
-  op_try
+  op_try,
+  op_set,
+  op_append
 };
