@@ -1,8 +1,10 @@
 
+const readline = require("readline");
+const { executeGraph } = require("./graphEngine");
+
 function op_import(id, params, memory, functions, basePath) {
   const path = require("path");
   const fs = require("fs");
-  const { executeGraph } = require("./graphEngine");
 
   const { path: importPath, scope = "global" } = params;
   console.log(`[${id}] Importing: ${importPath} (${scope})`);
@@ -62,8 +64,6 @@ function op_call(id, params, memory, functions) {
 
 function op_try(id, params, memory, functions, basePath) {
   const { try: tryBlock = [], catch: catchBlock = [] } = params;
-  const { executeGraph } = require("./graphEngine");
-
   try {
     executeGraph(tryBlock, memory, functions, basePath);
   } catch (err) {
@@ -97,7 +97,6 @@ function op_append(id, params, memory) {
 function op_scope(id, params, memory, functions, basePath) {
   const { body = [] } = params;
   const clonedMemory = JSON.parse(JSON.stringify(memory));
-  const { executeGraph } = require("./graphEngine");
 
   console.log(`[${id}] Entering scoped memory context`);
   try {
@@ -111,7 +110,6 @@ function op_scope(id, params, memory, functions, basePath) {
 
 function op_fork(id, params, memory, functions, basePath) {
   const { branches = [] } = params;
-  const { executeGraph } = require("./graphEngine");
 
   console.log(`[${id}] Forking ${branches.length} branches`);
   branches.forEach((branch, index) => {
@@ -126,16 +124,13 @@ function op_fork(id, params, memory, functions, basePath) {
   });
 }
 
-
 function op_delay(id, params) {
   const { ms = 1000 } = params;
   console.log(`[${id}] Delaying for ${ms}ms`);
   const start = Date.now();
   const end = start + ms;
-  while (Date.now() < end); // busy wait (simulate sync delay)
+  while (Date.now() < end);
 }
-
-
 
 function op_eval(id, params, memory) {
   const { expression, outputs = [] } = params;
@@ -149,15 +144,11 @@ function op_eval(id, params, memory) {
   }
 }
 
-
-
 function op_exit(id, params) {
   const { message = "Exited", code = 0 } = params;
   console.log(`[${id}] Exit: ${message}`);
   process.exit(code);
 }
-
-
 
 function op_debug(id, params, memory) {
   const { inputs = [], message = "" } = params;
@@ -166,10 +157,6 @@ function op_debug(id, params, memory) {
     : JSON.stringify(memory, null, 2);
   console.log(`[${id}] Debug ${message ? `(${message})` : ""}: ${snapshot}`);
 }
-
-
-
-const readline = require("readline");
 
 function op_prompt(id, params, memory, done) {
   const { message = "Enter input:", key = "input" } = params;
@@ -182,11 +169,9 @@ function op_prompt(id, params, memory, done) {
     memory[key] = answer;
     console.log(`[${id}] Stored ${key} = ${answer}`);
     rl.close();
-    done(); // signal async op completion
+    done();
   });
 }
-
-
 
 function op_require(id, params, memory) {
   const { keys = [] } = params;
@@ -206,15 +191,14 @@ function op_require(id, params, memory) {
   console.log(`[${id}] All required keys are present: ${keys.join(", ")}`);
 }
 
+function op_random(id, params, memory) {
+  const { min = 0, max = 1, key = "random" } = params;
+  const result = Math.floor(Math.random() * (max - min + 1)) + min;
+  memory[key] = result;
+  console.log(`[${id}] Random ${key} = ${result}`);
+}
 
-// Export block
 module.exports = {
-  op_require,
-  op_prompt,
-  op_debug,
-  op_exit,
-  op_eval,
-  op_delay,
   op_import,
   op_compute,
   op_watch,
@@ -227,4 +211,11 @@ module.exports = {
   op_append,
   op_scope,
   op_fork,
+  op_delay,
+  op_eval,
+  op_exit,
+  op_debug,
+  op_prompt,
+  op_require,
+  op_random,
 };

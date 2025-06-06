@@ -1,0 +1,43 @@
+{
+  "graph": [
+    {
+      "id": "set1",
+      "op": "op_set",
+      "params": {
+        "key": "a",
+        "value": 2
+      }
+    },
+    {
+      "id": "set2",
+      "op": "op_set",
+      "params": {
+        "key": "b",
+        "value": 3
+      }
+    },
+    {
+      "id": "compute1",
+      "op": "op_compute",
+      "params": {
+        "inputs": [
+          "a",
+          "b"
+        ],
+        "outputs": [
+          "sum"
+        ],
+        "compute": "sum"
+      }
+    },
+    {
+      "id": "watch1",
+      "op": "op_watch",
+      "params": {
+        "inputs": [
+          "sum"
+        ]
+      }
+    }
+  ]
+}

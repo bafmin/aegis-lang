@@ -1,0 +1,22 @@
+{
+  "graph": [
+    {
+      "id": "rand1",
+      "op": "op_random",
+      "params": {
+        "min": 1,
+        "max": 6,
+        "key": "roll1"
+      }
+    },
+    {
+      "id": "rand2",
+      "op": "op_watch",
+      "params": {
+        "inputs": [
+          "roll1"
+        ]
+      }
+    }
+  ]
+}

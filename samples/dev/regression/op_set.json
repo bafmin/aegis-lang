@@ -1,0 +1,21 @@
+{
+  "graph": [
+    {
+      "id": "set1",
+      "op": "op_set",
+      "params": {
+        "key": "foo",
+        "value": 42
+      }
+    },
+    {
+      "id": "watch1",
+      "op": "op_watch",
+      "params": {
+        "inputs": [
+          "foo"
+        ]
+      }
+    }
+  ]
+}

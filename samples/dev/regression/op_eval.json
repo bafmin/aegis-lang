@@ -1,0 +1,39 @@
+{
+  "graph": [
+    {
+      "id": "set1",
+      "op": "op_set",
+      "params": {
+        "key": "x",
+        "value": 5
+      }
+    },
+    {
+      "id": "set2",
+      "op": "op_set",
+      "params": {
+        "key": "y",
+        "value": 3
+      }
+    },
+    {
+      "id": "eval1",
+      "op": "op_eval",
+      "params": {
+        "expression": "x > y",
+        "outputs": [
+          "result"
+        ]
+      }
+    },
+    {
+      "id": "watch1",
+      "op": "op_watch",
+      "params": {
+        "inputs": [
+          "result"
+        ]
+      }
+    }
+  ]
+}

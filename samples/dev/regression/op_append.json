@@ -1,0 +1,29 @@
+{
+  "graph": [
+    {
+      "id": "append1",
+      "op": "op_append",
+      "params": {
+        "key": "myList",
+        "value": "hello"
+      }
+    },
+    {
+      "id": "append2",
+      "op": "op_append",
+      "params": {
+        "key": "myList",
+        "value": "world"
+      }
+    },
+    {
+      "id": "watch1",
+      "op": "op_watch",
+      "params": {
+        "inputs": [
+          "myList"
+        ]
+      }
+    }
+  ]
+}
